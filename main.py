@@ -1,9 +1,16 @@
+import os
+from flask import Flask, render_template, redirect, request, session
 import random
 import string
-from flask import Flask, render_template, redirect, request, session
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Needed for session management
+
+# Use environment variable for secret key, or fallback to a default value if not set
+app.secret_key = os.environ.get('SECRET_KEY', 'your_default_secret_key')
+
+# Determine whether to run in debug mode based on the environment
+app.config['DEBUG'] = os.environ.get('FLASK_DEBUG', 'False') == 'True'
+
 shortened_urls = {}
 
 def generate_short_url(length=6):
@@ -40,4 +47,4 @@ def redirect_url(short_url):
         return "URL not found", 404
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=app.config['DEBUG'])  # Runs with debug based on the environment setting
