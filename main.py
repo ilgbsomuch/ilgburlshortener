@@ -11,40 +11,30 @@ app.secret_key = os.environ.get('SECRET_KEY', 'your_default_secret_key')
 # Determine whether to run in debug mode based on the environment
 app.config['DEBUG'] = os.environ.get('FLASK_DEBUG', 'False') == 'True'
 
-shortened_urls = {}
-
-def generate_short_url(length=6):
-    chars = string.ascii_letters + string.digits
-    short_url = ''.join(random.choice(chars) for _ in range(length))
-    return short_url
+def generate_password(length=12):
+    """Generates a random password with letters, digits, and punctuation"""
+    chars = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(chars) for _ in range(length))
+    return password
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    # Retrieve the short_url from the session if available
-    short_url = session.get('short_url', None)
+    # Retrieve the password from the session if available
+    password = session.get('password', None)
     
     if request.method == "POST":
-        long_url = request.form['long_url']
-        short_url = generate_short_url()
-        while short_url in shortened_urls:
-            short_url = generate_short_url()
+        # Get password length from the form, defaulting to 12 if not provided
+        length = int(request.form.get('length', 12))
+        
+        # Generate a new password based on the chosen length
+        password = generate_password(length)
+        
+        # Store the generated password in the session
+        session['password'] = password
 
-        shortened_urls[short_url] = long_url
-
-        # Store the generated short_url in the session for this user
-        session['short_url'] = f"{request.url_root}{short_url}"
-
-        return render_template("index.html", short_url=session['short_url'])
+        return render_template("index.html", password=password)
     
-    return render_template("index.html", short_url=short_url)
-
-@app.route("/<short_url>")
-def redirect_url(short_url):
-    long_url = shortened_urls.get(short_url)
-    if long_url:
-        return redirect(long_url)
-    else:
-        return "URL not found", 404
+    return render_template("index.html", password=password)
 
 if __name__ == "__main__":
     app.run(debug=app.config['DEBUG'])  # Runs with debug based on the environment setting

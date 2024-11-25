@@ -8,12 +8,18 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh; /* Full height viewport */
+    flex-direction: column; /* Ensures elements stack on top of each other */
+    text-align: center; /* Centers text content */
+    padding: 0 20px; /* Ensures no content is too close to the edges */
+    box-sizing: border-box;
 }
 
 h1 {
     margin-bottom: 20px;
+    font-size: 2rem; /* Set a default size for large screens */
 }
 
+/* Center the form and ensure responsiveness */
 form {
     display: flex;
     flex-direction: column;
@@ -22,21 +28,31 @@ form {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    max-width: 400px; /* Max width to prevent the form from stretching too much on large screens */
+    width: 100%;
+    box-sizing: border-box;
 }
 
-input[type="url"] {
+label {
+    color: #ffffff;
+    margin-bottom: 8px;
+    font-size: 1.2rem; /* Slightly larger font for better readability */
+}
+
+input[type="number"] {
     width: 100%;
-    max-width: 300px;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 15px;
     border: none;
     border-radius: 5px;
     outline: none;
     font-size: 16px;
+    background: #444; /* Slightly lighter background for the input */
+    color: #fff;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 25px;
     font-size: 16px;
     border: none;
     border-radius: 5px;
@@ -44,6 +60,8 @@ button {
     color: #ffffff;
     cursor: pointer;
     transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+    width: 100%; /* Make the button take the full width of the form */
+    max-width: 300px; /* Button will not exceed this width */
 }
 
 button:hover {
@@ -55,18 +73,42 @@ button:active {
     transform: scale(0.95); /* Shrink slightly on click */
 }
 
+/* Ensure proper mobile responsiveness */
 @media (max-width: 768px) {
-    h1 {
-        font-size: 1.5rem;
+    body {
+        padding: 0 15px; /* Reduce the padding on smaller screens */
     }
 
-    input[type="url"] {
-        max-width: 250px;
-        font-size: 14px;
+    h1 {
+        font-size: 1.5rem; /* Adjust heading size for smaller screens */
+    }
+
+    form {
+        width: 100%;
+        max-width: 90%; /* Form width will not exceed 90% of the screen */
+        padding: 15px;
+    }
+
+    input[type="number"], button {
+        font-size: 14px; /* Adjust input and button font size */
+    }
+
+    button {
+        padding: 10px 20px; /* Adjust button padding on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.2rem; /* Further reduce heading size for very small screens */
+    }
+
+    input[type="number"] {
+        font-size: 14px; /* Smaller input font on mobile */
     }
 
     button {
         font-size: 14px;
-        padding: 8px 16px;
+        padding: 8px 16px; /* Reduce button padding */
     }
 }

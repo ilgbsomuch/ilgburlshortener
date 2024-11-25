@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ILGB URL Shortener</title>
+    <title>ILGB Pass Gen</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- Linking the external CSS file -->
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}"> <!-- Linking the favicon.ico -->
 </head>
 <body>
     <div>
-        <h1>ILGB URL Shortener</h1>
+        <h1>ILGB Password Generator</h1>
         <form method="POST" action="{{ url_for('index') }}">
-            <input type="url" name="long_url" placeholder="Enter URL" required>
-            <button type="submit">Shorten</button>
+            <label for="length">Password Length:</label>
+            <input type="number" name="length" min="6" max="32" value="12" required>
+            <button type="submit">Generate Password</button>
         </form>
         
-        {% if short_url %}
+        {% if password %}
         <div>
-            <p>Shortened URL: <a href="{{ short_url }}" target="_blank">{{ short_url }}</a></p>
+            <h2>Your Generated Password:</h2>
+            <p>{{ password }}</p>
         </div>
         {% endif %}
     </div>
